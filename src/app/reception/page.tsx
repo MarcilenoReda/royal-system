@@ -470,12 +470,10 @@ export default function ReceptionPage() {
                     className="hidden"
                     id="photo-upload"
                   />
-                  <label htmlFor="photo-upload" className="cursor-pointer">
-                    <Button variant="outline" className="w-full" asChild>
-                      <span>
-                        <Icon name="upload" />
-                        رفع صورة
-                      </span>
+                  <label htmlFor="photo-upload" className="cursor-pointer w-full block">
+                    <Button variant="outline" className="w-full">
+                      <Icon name="upload" />
+                      رفع صورة
                     </Button>
                   </label>
                 </div>
