@@ -197,7 +197,8 @@ export default function ReceptionPage() {
       // Photo upload
       if (formData.photo) {
         try {
-          const fileName = `${repair.id}-${Date.now()}`
+          const fileExt = formData.photo.name.split('.').pop()
+          const fileName = `${repair.id}/reception/${Date.now()}.${fileExt}`
           const { error: uploadError } = await supabase.storage
             .from('repair-photos')
             .upload(fileName, formData.photo)
@@ -207,7 +208,7 @@ export default function ReceptionPage() {
           } else {
             await supabase.from('repair_photos').insert({
               repair_id: repair.id,
-              photo_url: fileName,
+              file_path: fileName,
               photo_type: 'reception',
             })
           }

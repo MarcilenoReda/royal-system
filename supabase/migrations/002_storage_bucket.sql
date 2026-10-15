@@ -8,19 +8,23 @@ VALUES (
   ARRAY['image/jpeg', 'image/png', 'image/webp']
 ) ON CONFLICT (id) DO NOTHING;
 
--- Row Level Security for storage
--- Allow public access for testing (remove auth.role() check)
-CREATE POLICY "Users can upload repair photos" ON storage.objects
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can upload repair photos" ON storage.objects;
+DROP POLICY IF EXISTS "Users can view repair photos" ON storage.objects;
+DROP POLICY IF EXISTS "Users can delete repair photos" ON storage.objects;
+
+-- Row Level Security for storage - Allow public access
+CREATE POLICY "Public can upload repair photos" ON storage.objects
   FOR INSERT WITH CHECK (
     bucket_id = 'repair-photos'
   );
 
-CREATE POLICY "Users can view repair photos" ON storage.objects
+CREATE POLICY "Public can view repair photos" ON storage.objects
   FOR SELECT USING (
     bucket_id = 'repair-photos'
   );
 
-CREATE POLICY "Users can delete repair photos" ON storage.objects
+CREATE POLICY "Public can delete repair photos" ON storage.objects
   FOR DELETE USING (
     bucket_id = 'repair-photos'
   );
