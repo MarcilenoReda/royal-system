@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // Simple auth password (stored in environment variable for security)
-const AUTH_PASSWORD = process.env.NEXT_PUBLIC_AUTH_PASSWORD || '0112423995'
+const AUTH_PASSWORD = process.env.AUTH_PASSWORD || process.env.NEXT_PUBLIC_AUTH_PASSWORD || '0112423995'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
@@ -10,16 +10,17 @@ export async function middleware(req: NextRequest) {
   // Check if user is authenticated
   const authPassword = req.cookies.get('auth_password')?.value
 
-  // If no session and trying to access protected routes, redirect to login
-  if (!authPassword || authPassword !== AUTH_PASSWORD) {
-    if (req.nextUrl.pathname !== '/login') {
-      return NextResponse.redirect(new URL('/login', req.url))
+  // Allow access to login page
+  if (req.nextUrl.pathname === '/login') {
+    if (authPassword === AUTH_PASSWORD) {
+      return NextResponse.redirect(new URL('/', req.url))
     }
+    return res
   }
 
-  // If session exists and trying to access login, redirect to home
-  if (authPassword === AUTH_PASSWORD && req.nextUrl.pathname === '/login') {
-    return NextResponse.redirect(new URL('/', req.url))
+  // For all other routes, check authentication
+  if (!authPassword || authPassword !== AUTH_PASSWORD) {
+    return NextResponse.redirect(new URL('/login', req.url))
   }
 
   return res
