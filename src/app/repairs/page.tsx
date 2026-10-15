@@ -10,7 +10,7 @@ import Select from '@/components/ui/Select'
 import StatusBadge from '@/components/ui/StatusBadge'
 import { Table, TableRow, TableCell } from '@/components/ui/Table'
 import { Card, CardContent } from '@/components/ui/Card'
-import { TableSkeleton } from '@/components/ui/Skeleton'
+import Skeleton, { TableSkeleton } from '@/components/ui/Skeleton'
 import { useRouter } from 'next/navigation'
 
 type Repair = {
